@@ -4,12 +4,20 @@ const Header = ({ name }) => <h1>{name}</h1>
 
 const Button = ({ handleClick, text}) => <button onClick={handleClick}>{text}</button>
 
+const Statistics = ({ value, name }) => {
+  return (
+    <p>{name}: {value}</p>
+  )
+}
+
 const App = () => {
   const [good, setGood] = useState(0);
   const [neutral, setNeutral] = useState(0);
   const [bad, setBad] = useState(0);
 
   const total = good + bad + neutral;
+  const average = (good + (bad * -1))/total;
+  const positive = (good/total) * 100;
 
   return (
     <div>
@@ -21,9 +29,9 @@ const App = () => {
       <p>good: {good}</p>
       <p>neutral: {neutral}</p>
       <p>bad: {bad}</p>
-      <p>all: {total}</p>
-      <p>average: {(good + (bad * -1))/total}</p>
-      <p>positive: {(good/total) * 100}%</p>
+      <Statistics value={total} name="all" />
+      <Statistics value={average} name="average" />
+      <Statistics value={`${positive}%`} name="percent positive" />
     </div>
   )
 }
