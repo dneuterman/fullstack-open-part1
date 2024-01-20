@@ -4,9 +4,17 @@ const Header = ({ name }) => <h1>{name}</h1>
 
 const Button = ({ handleClick, text}) => <button onClick={handleClick}>{text}</button>
 
-const Statistics = ({ value, name }) => {
+const StatisticsLine = ({ value, name }) => {
   return (
     <p>{name}: {value}</p>
+  )
+}
+
+const Statistics = ({ stats }) => {
+  return (
+    <>
+    {stats.map((stat, index) => <StatisticsLine key={index} value={stat.value} name={stat.name} />)}
+    </>
   )
 }
 
@@ -19,18 +27,40 @@ const App = () => {
   const average = (good + (bad * -1))/total;
   const positive = (good/total) * 100;
 
+  const statObjects = [
+    {
+      name: "good",
+      value: good
+    },
+    {
+      name: "neutral",
+      value: neutral
+    },
+    {
+      name: "bad",
+      value: bad
+    },
+    {
+      name: "all",
+      value: total
+    },
+    {
+      name: "average",
+      value: average
+    },
+    {
+      name: "positive",
+      value: `${positive}%`
+    }
+  ]
+
   const isNoFeedback = () => {
     if ((good === 0) && (neutral === 0) && (bad === 0)) {
       return <p>No feedback given</p>
     }
     return (
       <>
-      <Statistics value={good} name="good" />
-      <Statistics value={neutral} name="neutral" />
-      <Statistics value={bad} name="bad" />
-      <Statistics value={total} name="all" />
-      <Statistics value={average} name="average" />
-      <Statistics value={`${positive}%`} name="percent positive" />
+      <Statistics stats={statObjects} />
       </>
     )
   }
