@@ -11,18 +11,10 @@ const App = () => {
     'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.',
     'The only way to go fast, is to go well.'
   ]
-
-  let anecdotesAndVotes = []
-
-  for (let i = 0; i < anecdotes.length; i++) {
-    anecdotesAndVotes.push({
-      anecdote: anecdotes[i],
-      voteCount: 0
-    });
-  }
    
-  const [selected, setSelected] = useState(0)
-  const [anecdotesState, setAnecdotesState] = useState(anecdotesAndVotes)
+  const [selected, setSelected] = useState(0);
+  const [votes, setVotes] = useState(new Array(anecdotes.length).fill(0));
+  const [mostVotes, setMostVotes] = useState(0);
 
   const getRandomQuote = () => {
     const randNum = Math.floor(Math.random() * anecdotes.length);
@@ -30,19 +22,24 @@ const App = () => {
   }
 
   const voteOnQuote = () => {
-    const increaseVotes = [...anecdotesState];
-    increaseVotes[selected].voteCount += 1;
-    setAnecdotesState(increaseVotes);
+    const increaseVotes = [...votes];
+    increaseVotes[selected] += 1;
+    const newMax = increaseVotes.indexOf(Math.max(...increaseVotes));
+    setMostVotes(newMax);
+    setVotes(increaseVotes);
   }
 
   return (
     <div>
-      <p>{anecdotesState[selected].anecdote}</p>
-      <p>has {anecdotesState[selected].voteCount} votes</p>
+      <h1>Anecdote of the Day</h1>
+      <p>{anecdotes[selected]}</p>
+      <p>has {votes[selected]} votes</p>
       <div>
         <button onClick={voteOnQuote}>Vote</button>
         <button onClick={getRandomQuote}>Get Random Quote</button>
       </div>
+      <h1>Anecdote with the most votes</h1>
+      <p>{anecdotes[mostVotes]}</p>
     </div>
   )
 }
