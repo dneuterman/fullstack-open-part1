@@ -14,9 +14,17 @@ const App = () => {
    
   const [selected, setSelected] = useState(0)
 
+  const getRandomQuote = () => {
+    const randNum = Math.floor(Math.random() * anecdotes.length);
+    setSelected(randNum);
+  }
+
   return (
     <div>
       {anecdotes[selected]}
+      <div>
+        <button onClick={getRandomQuote}>Get Random Quote</button>
+      </div>
     </div>
   )
 }
