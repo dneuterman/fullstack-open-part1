@@ -11,18 +11,36 @@ const App = () => {
     'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.',
     'The only way to go fast, is to go well.'
   ]
+
+  let anecdotesAndVotes = []
+
+  for (let i = 0; i < anecdotes.length; i++) {
+    anecdotesAndVotes.push({
+      anecdote: anecdotes[i],
+      voteCount: 0
+    });
+  }
    
   const [selected, setSelected] = useState(0)
+  const [anecdotesState, setAnecdotesState] = useState(anecdotesAndVotes)
 
   const getRandomQuote = () => {
     const randNum = Math.floor(Math.random() * anecdotes.length);
     setSelected(randNum);
   }
 
+  const voteOnQuote = () => {
+    const increaseVotes = [...anecdotesState];
+    increaseVotes[selected].voteCount += 1;
+    setAnecdotesState(increaseVotes);
+  }
+
   return (
     <div>
-      {anecdotes[selected]}
+      <p>{anecdotesState[selected].anecdote}</p>
+      <p>has {anecdotesState[selected].voteCount} votes</p>
       <div>
+        <button onClick={voteOnQuote}>Vote</button>
         <button onClick={getRandomQuote}>Get Random Quote</button>
       </div>
     </div>
